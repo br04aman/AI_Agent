@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Q&A Bot</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">🤖 AI Q&A Bot (Gemini)</h1>
+        
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex space-x-2">
+                    <input type="text" id="question" 
+                           class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           placeholder="Ask a question...">
+                    <button onclick="askQuestion()" 
+                            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        Ask
+                    </button>
+                </div>
+            </div>
+
+            <div id="thinking" class="hidden text-center text-gray-600 my-4">
+                Thinking...
+            </div>
+
+            <div id="qa-history" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <script>
+        async function askQuestion() {
+            const questionInput = document.getElementById('question');
+            const question = questionInput.value.trim();
+            
+            if (!question) return;
+            
+            // Show thinking indicator
+            document.getElementById('thinking').classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question })
+                });
+                
+                const data = await response.json();
+                
+                // Add new QA pair to history
+                const historyDiv = document.getElementById('qa-history');
+                const qaElement = document.createElement('div');
+                qaElement.className = 'bg-white rounded-lg shadow-md p-6';
+                qaElement.innerHTML = `
+                    <div class="font-semibold text-gray-700 mb-2">Q: ${question}</div>
+                    <div class="text-gray-600">A: ${data.answer}</div>
+                `;
+                historyDiv.insertBefore(qaElement, historyDiv.firstChild);
+                
+                // Clear input
+                questionInput.value = '';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while getting the answer.');
+            } finally {
+                // Hide thinking indicator
+                document.getElementById('thinking').classList.add('hidden');
+            }
+        }
+
+        // Allow pressing Enter to submit
+        document.getElementById('question').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askQuestion();
+            }
+        });
+    </script>
+</body>
+</html>
