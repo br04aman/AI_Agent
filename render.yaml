@@ -2,8 +2,8 @@ services:
   - type: web
     name: qa-bot
     env: python
-    buildCommand: bash build.sh
-    startCommand: gunicorn qa:app
+    buildCommand: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+    startCommand: python -m gunicorn qa:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0

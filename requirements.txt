@@ -2,7 +2,4 @@
 flask==2.0.1
 python-dotenv==0.19.0
 autogen==0.9.7
-<<<<<<< HEAD
 gunicorn==20.1.0
-=======
->>>>>>> 9ac9654ab46c97694e832f13ae8e719cce3e939f
