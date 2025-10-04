@@ -8,7 +8,13 @@ from autogen import AssistantAgent
 from flask import Flask, render_template, request, jsonify
 
 # Initialize Flask app
+# ... existing code ...
+# Add this near the top of the file after imports
+from flask import Flask
+import os
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(24)
 
 # Load environment variables
 load_dotenv()
@@ -163,5 +169,6 @@ def ask_question():
     })
 
 if __name__ == "__main__":
-    # Remove the CLI interface since we're using Flask
-    app.run(debug=True)
+    # Use environment variable for port, defaulting to 5000
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

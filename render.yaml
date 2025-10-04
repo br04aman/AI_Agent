@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: qa-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn qa:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: GEMINI_API_KEY
+        sync: false
