@@ -85,7 +85,7 @@ stats = {
 
 # ---------- Main ----------
 def main():
-    print("🤖 AI Q&A Bot (Powered by Radicals)")
+    print("🤖 AI Q&A Bot(Powered by Radicals)")
     print("Ask any question, get AI-powered answers!\n")
 
     llm_config = get_llm_config()
